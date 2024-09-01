@@ -1,5 +1,30 @@
-<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-<h1>Welcome to the Home Page!</h1>
-<p>You are successfully logged in.</p>
-<a href="{% url 'login' %}">Login again</a>
+{% block title %}
+    Create Storehouse Record
+{% endblock %}
+
+{% block content %}
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+        <div class="az-content-breadcrumb">
+            <span>Storehouse</span>
+        </div>
+        <h2 class="az-content-title">Добро пожаловать!</h2>
+
+        <div class="az-content-label mg-b-5">Логин аккаунта</div>
+        <div class="row row-xs wd-xl-80p">
+            <div class="col-sm-12 mg-t-10 mg-md-t-0 mb-3">
+                <a class="btn btn-success btn-with-icon btn-block" href="{% url 'create_record' %}"><i class="typcn typcn-plus"></i> Добавить заказ
+                </a>
+            </div>
+            <div class="col-sm-12 mg-t-10 mg-md-t-0">
+                <a class="btn btn-indigo btn-with-icon btn-block" href="{% url 'record_list' %}"><i class="typcn typcn-th-list"></i> Список заказов
+                </a>
+            </div>
+
+        </div>
+
+    </div><!-- az-content-body -->
+
+{% endblock %}

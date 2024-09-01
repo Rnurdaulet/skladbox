@@ -66,7 +66,10 @@
                         <td>{{ record.date }}</td>
                         <td>
                             <a href="{% url 'record_detail' record.pk %}"
-                               class="btn btn-primary btn-sm">Подробнее</a>
+                               class="btn btn-primary btn-sm">Подробнее
+                             <i class="typcn typcn-chevron-right"></i>
+                            </a>
+
                         </td>
                     </tr>
                 {% endfor %}

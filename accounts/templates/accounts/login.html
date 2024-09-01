@@ -3,30 +3,35 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="login-form-bg h-100">
-    <div class="container h-100">
-        <div class="row justify-content-center h-100">
-            <div class="col-xl-6">
-                <div class="form-input-content">
-                    <div class="card login-form mb-0">
-                        <div class="card-body pt-5">
-                            <a class="text-center" href="{% url 'home' %}"> <h4>Rosella</h4></a>
-                            <form method="POST" class="mt-5 mb-5 login-input">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <input type="email" name="username" class="form-control" placeholder="Email" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                                </div>
-                                <button type="submit" class="btn login-form__btn submit w-100">Sign In</button>
-                            </form>
-                            <p class="mt-5 login-form__footer">Don't have an account? <a href="{% url 'register' %}" class="text-primary">Sign Up</a> now</p>
-                        </div>
+    <div class="az-signin-wrapper">
+        <div class="az-card-signin">
+            <h1 class="az-logo">Saule<span>-</span>Marat</h1>
+            <div class="az-signin-header">
+                <h2>С возвращением!</h2>
+                <h4>Войдите в систему, чтобы продолжить</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Логин</label>
+                        <input type="text" name="username" class="form-control" placeholder="Введите логин">
+                    </div><!-- form-group -->
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" name="password" class="form-control" placeholder="Введите пароль">
+                    </div><!-- form-group -->
+                    <button class="btn btn-az-primary btn-block">Войти</button>
+                </form>
+            </div><!-- az-signin-header -->
+            <div class="az-signin-footer">
+                {% if error_message %}
+                    <div class="alert alert-outline-danger" role="alert">
+                        {{ error_message }}
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                {% endif %}
+                {#                <p><a href="">Forgot password?</a></p>#}
+                {#                <p>Don't have an account? <a href="page-signup.html">Create an Account</a></p>#}
+            </div><!-- az-signin-footer -->
+        </div><!-- az-card-signin -->
+    </div><!-- az-signin-wrapper -->
 {% endblock %}
