@@ -1,8 +1,118 @@
-<!-- templates/storehouse/create_record.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-<h2>Create Storehouse Record</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+{% block title %}
+    Create Storehouse Record
+{% endblock %}
+
+{% block content %}
+{#    <div class="az-content-left az-content-left-components">#}
+{#        <div class="component-item">#}
+{#            <label>UI Elements</label>#}
+{#            <nav class="nav flex-column">#}
+{#                <a href="elem-buttons.html" class="nav-link">Buttons</a>#}
+{#                <a href="elem-dropdown.html" class="nav-link">Dropdown</a>#}
+{#                <a href="elem-icons.html" class="nav-link">Icons</a>#}
+{#            </nav>#}
+{#            <label>Forms</label>#}
+{#            <nav class="nav flex-column">#}
+{#                <a href="form-elements.html" class="nav-link">Form Elements</a>#}
+{#            </nav>#}
+{#            <label>Charts</label>#}
+{#            <nav class="nav flex-column">#}
+{#                <a href="chart-chartjs.html" class="nav-link">ChartJS</a>#}
+{#            </nav>#}
+{##}
+{#            <label>Tables</label>#}
+{#            <nav class="nav flex-column">#}
+{#                <a href="table-basic.html" class="nav-link">Basic Tables</a>#}
+{#            </nav>#}
+{#        </div><!-- component-item -->#}
+{##}
+{#    </div><!-- az-content-left -->#}
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+        <div class="az-content-breadcrumb">
+            <span>Storehouse</span>
+            <span>Create Record</span>
+        </div>
+        <h2 class="az-content-title">Create Storehouse Record</h2>
+
+        <div class="az-content-label mg-b-5">Form Input &amp; Textarea</div>
+        <p class="mg-b-20">A basic form control input and textarea with disabled and readonly mode.</p>
+
+        <div class="row row-sm mg-t-20">
+            <form method="POST" enctype="multipart/form-data" class="needs-validation">
+                {% csrf_token %}
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label class="ckbox" for="{{ form.cashless_payment.id_for_label }}">
+                        {{ form.cashless_payment }}
+                        <span>
+                            {{ form.cashless_payment.label }}
+                        </span>
+                    </label>
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.sender_name.id_for_label }}">{{ form.sender_name.label }}</label>
+                    {{ form.sender_name }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.sender_phone.id_for_label }}">{{ form.sender_phone.label }}</label>
+                    {{ form.sender_phone }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.receiver_name.id_for_label }}">{{ form.receiver_name.label }}</label>
+                    {{ form.receiver_name }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.receiver_phone.id_for_label }}">{{ form.receiver_phone.label }}</label>
+                    {{ form.receiver_phone }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.places_count.id_for_label }}">{{ form.places_count.label }}</label>
+                    {{ form.places_count }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.amount_paid.id_for_label }}">{{ form.amount_paid.label }}</label>
+                    {{ form.amount_paid }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                    {{ form.comment }}
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <div class="custom-file">
+                                            <label for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>
+                    {{ form.photo }}
+                    </div>
+
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <button type="submit" class="btn btn-outline-primary">Save</button>
+                </div>
+            </form>
+        </div><!-- row -->
+        <div class="ht-40"></div>
+    </div><!-- az-content-body -->
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
+    <script src="{% static 'lib/jquery-ui/ui/widgets/datepicker.js' %}"></script>
+    <script src="{% static 'lib/jquery.maskedinput/jquery.maskedinput.js' %}"></script>
+    <script src="{% static 'lib/spectrum-colorpicker/spectrum.js' %}"></script>
+    <script src="{% static 'lib/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/ion-rangeslider/js/ion.rangeSlider.min.js' %}"></script>
+    <script src="{% static 'lib/amazeui-datetimepicker/js/amazeui.datetimepicker.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-simple-datetimepicker/jquery.simple-dtpicker.js' %}"></script>
+    <script src="{% static 'lib/pickerjs/picker.min.js' %}"></script>
+    <script src="{% static 'js/cookie.js' %}" type="text/javascript"></script>
+{% endblock %}

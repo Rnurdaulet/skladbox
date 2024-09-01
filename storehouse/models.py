@@ -5,9 +5,9 @@ from django.db import models
 class StorehouseRecord(models.Model):
     cashless_payment = models.BooleanField(default=False, verbose_name="Безналичный расчет")
     sender_name = models.CharField(max_length=255, verbose_name="ФИО отправителя")
-    sender_phone = models.CharField(max_length=20, verbose_name="Номер телефона отправителя")
+    sender_phone = models.CharField(max_length=255, verbose_name="Номер телефона отправителя")
     receiver_name = models.CharField(max_length=255, verbose_name="ФИО получателя")
-    receiver_phone = models.CharField(max_length=20, verbose_name="Номер телефона получателя")
+    receiver_phone = models.CharField(max_length=255, verbose_name="Номер телефона получателя")
     places_count = models.PositiveIntegerField(verbose_name="Количество мест")
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Оплачено")
     comment = models.TextField(blank=True, null=True, verbose_name="Комментарий")

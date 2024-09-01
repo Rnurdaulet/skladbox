@@ -1,66 +1,67 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Record Details{% endblock %}
+{% block title %}
+    Create Storehouse Record
+{% endblock %}
 
 {% block content %}
-<!--**********************************
-    Content body start
-***********************************-->
-<div class="content-body">
 
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'record_list' %}">Storehouse Records</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Record Details</a></li>
-            </ol>
+
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+        <div class="az-content-breadcrumb">
+            <span>Components</span>
+            <span>Tables</span>
+            <span>Basic Tables</span>
         </div>
-    </div>
-    <!-- row -->
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Details for Record #{{ record.id }}</h4>
-                        <a href="{% url 'generate_pdf' record.id %}" class="btn btn-secondary">Скачать PDF</a>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Details for Record #{{ record.id }}</h4>
 
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><a href="{% url 'generate_pdf' record.id %}"
+                                                           class="btn btn-success btn-with-icon btn-block">
+                                <i class="typcn-download-outline"></i>Скачать PDF</a>
+                            </li>
+                            <li class="list-group-item"><strong>ФИО
+                                отправителя:</strong> {{ record.sender_name }}</li>
+                            <li class="list-group-item"><strong>Телефон
+                                отправителя:</strong> {{ record.sender_phone }}</li>
+                            <li class="list-group-item"><strong>ФИО
+                                получателя:</strong> {{ record.receiver_name }}</li>
+                            <li class="list-group-item"><strong>Телефон
+                                получателя:</strong> {{ record.receiver_phone }}</li>
+                            <li class="list-group-item"><strong>Количество
+                                мест:</strong> {{ record.places_count }}</li>
+                            <li class="list-group-item"><strong>Оплачено:</strong> {{ record.amount_paid }}
+                            </li>
+                            <li class="list-group-item"><strong>Комментарий:</strong> {{ record.comment }}
+                            </li>
+
+                        </ul>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>ФИО отправителя:</strong> {{ record.sender_name }}</li>
-                                    <li class="list-group-item"><strong>Телефон отправителя:</strong> {{ record.sender_phone }}</li>
-                                    <li class="list-group-item"><strong>ФИО получателя:</strong> {{ record.receiver_name }}</li>
-                                    <li class="list-group-item"><strong>Телефон получателя:</strong> {{ record.receiver_phone }}</li>
-                                    <li class="list-group-item"><strong>Количество мест:</strong> {{ record.places_count }}</li>
-                                    <li class="list-group-item"><strong>Оплачено:</strong> {{ record.amount_paid }}</li>
-                                    <li class="list-group-item"><strong>Комментарий:</strong> {{ record.comment }}</li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="text-center">
-                                    {% if record.photo %}
-                                        <img src="{{ record.photo.url }}" alt="photo" class="img-fluid rounded">
-                                    {% else %}
-                                        <p>No photo available</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="{% url 'record_list' %}" class="btn btn-secondary">Back to list</a>
+                    <div class="col-lg-6">
+                        <div class="text-center">
+                            {% if record.photo %}
+                                <img src="{{ record.photo.url }}" alt="photo" class="img-fluid rounded">
+                            {% else %}
+                                <p>No photo available</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                <div class="mt-4">
+                    <a href="{% url 'record_list' %}" class="btn btn-indigo btn-with-icon btn-block"> <i class="typcn typcn-arrow-back-outline"></i>Назад</a>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- #/ container -->
-</div>
-<!--**********************************
-    Content body end
-***********************************-->
+
+        <div class="ht-40"></div>
+    </div><!-- az-content-body -->
 {% endblock %}

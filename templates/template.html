@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перевозчик «Сауле - Марат»</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f8f8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+        h1 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .section p {
+            margin: 5px 0;
+        }
+        .contacts, .info {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .info p {
+            text-align: center;
+            font-weight: bold;
+        }
+        .text-section {
+            border: 1px solid #000;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .text-section p {
+            margin: 10px 0;
+            padding-bottom: 5px;
+        }
+        .notice {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+		.notice p{
+		margin: 0;
+		}
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Перевозчик «Сауле - Марат»</h1>
+
+        <div class="section">
+            <h2>г. Алматы пункт приема груза</h2>
+            <p>Рынок «Салем»</p>
+            <p>8778 869 5454</p>
+            <p>8702 199 9507</p>
+            <p>Ангарская 107</p>
+            <p>8778 869 52 52</p>
+        </div>
+
+        <div class="section">
+            <h2>г. Астана пункт выдачи груза</h2>
+            <p>ул. Пушкина 35</p>
+            <p>(рядом 1 автобусный парк, можайский мост)</p>
+            <p>мы находимся на территории Бизнес Центра «Тінэлі»</p>
+            <p>(въезд на территорию платный)</p>
+        </div>
+
+        <div class="info">
+            <p>РЕЖИМ РАБОТЫ с 9.00ч до 14.00ч</p>
+        </div>
+
+        <div class="contacts">
+            <p>Контакты: 8 701 220 05 65, 8 701 135 31 11, 8 702 343 60 83, 8 702 199 95 29</p>
+            <p>8 775 737 75 74 (центральный рынок) для клиентов центрального рынка!!!</p>
+        </div>
+
+        <div class="text-section">
+            <p>Информацию о прибытии машин в телеграм «@saulemarat1» или WhatsApp статус</p>
+            <p>номер авто машины Nº ________________________</p>
+            <p>Получатель: {{ record.receiver_name }}</p>
+            <p>Телефон получателя: {{ record.receiver_phone }}</p>
+            <p>Кол-во мест: {{ record.places_count }}</p>
+            <p>Оплата: {{ record.amount_paid }}</p>
+            <p>Принял ________________________</p>
+            <p>Дата: {{ record.date|date:"d.m.Y" }}</p>
+        </div>
+
+        <div class="notice">
+            <p>Звонить через день после сдачи товара!</p>
+            <p>Выдача товара строго по квитанции!</p>
+            <p>Товар нужно забирать в день прибытия!</p>
+            <p>Хранение товара на складе платное!!!</p>
+            <p>Минимальная стоимость перевозки груза от 3000 тг</p>
+            <p class="bold">ПРЕТЕНЗИИ НЕ ПРИНИМАЮТСЯ:</p>
+            <p>После получения груза от курьера или вывоза за территорию склада!</p>
+            <p>Если груз принят с пометкой «без гарантии», есть повреждения или посторонние звуки внутри упаковки.</p>
+            <p>При отправке дорогостоящих, хрупких товаров просьба предупреждать приемщика!</p>
+            <p>ЯНДЕКС ТАКСИ - КУРЬЕРОВ НЕ ОБСЛУЖИВАЕМ!!!</p>
+            <p class="bold">ПРИМИТЕ ВО ВНИМАНИЕ!!!</p>
+        </div>
+    </div>
+</body>
+</html>

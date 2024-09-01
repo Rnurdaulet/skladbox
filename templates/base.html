@@ -1,157 +1,92 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- theme meta -->
-    <meta name="theme-name" content="quixlab" />
+    <!-- Meta Information -->
+    <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
+    <meta name="author" content="BootstrapDash">
+    <title>{% block title %}Dashboard{% endblock %}</title>
 
-    <title>{% block title %}Quixlab - Dashboard{% endblock %}</title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
-    <!-- Pignose Calender -->
-    <link href="{% static 'plugins/pg-calendar/css/pignose.calendar.min.css' %}" rel="stylesheet">
-    <!-- Chartist -->
-    <link rel="stylesheet" href="{% static 'plugins/chartist/css/chartist.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css' %}">
-    <!-- Custom Stylesheet -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Vendor CSS -->
+    <link href="{% static 'lib/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/typicons.font/typicons.css' %}" rel="stylesheet">
 
+    <!-- Azia CSS -->
+    <link rel="stylesheet" href="{% static 'css/azia.css' %}">
+
+    {% block extra_css %}
+    {% endblock %}
 </head>
-
 <body>
+    <div class="az-header">
+      <div class="container">
+        <div class="az-header-left">
+          <a href="/" class="az-logo"><span></span> Saule-Marat</a>
+          <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
+        </div><!-- az-header-left -->
+        <div class="az-header-menu">
+          <div class="az-header-menu-header">
+            <a href="/" class="az-logo"><span></span> Saule-Marat</a>
+            <a href="" class="close">&times;</a>
+          </div><!-- az-header-menu-header -->
+          <ul class="nav">
+            <li class="nav-item">
+              <a href="{% url 'record_list' %}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Все заказы</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'create_record' %}" class="nav-link"><i class="typcn typcn-chart-bar-outline"></i> Создать заказ</a>
+            </li>
+          </ul>
+        </div><!-- az-header-menu -->
+        <div class="az-header-right">
+          <div class="dropdown az-profile-menu">
+            <a href="" class="az-img-user"><img src="../img/faces/face1.jpg" alt=""></a>
+            <div class="dropdown-menu">
+              <div class="az-dropdown-header d-sm-none">
+                <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
+              </div>
+              <div class="az-header-profile">
+                <div class="az-img-user">
+                  <img src="../img/faces/face1.jpg" alt="">
+                </div><!-- az-img-user -->
+                <h6>Aziana Pechon</h6>
+                <span>Premium Member</span>
+              </div><!-- az-header-profile -->
+              <a href="page-signin.html" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Выйти</a>
+            </div><!-- dropdown-menu -->
+          </div>
+        </div><!-- az-header-right -->
+      </div><!-- container -->
+    </div><!-- az-header -->
 
-    <!-- Preloader start -->
-    <div id="preloader">
-        <div class="loader">
-            <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
-            </svg>
+    <div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
-    <!-- Preloader end -->
 
-
-    <!-- Main wrapper start -->
-    <div id="main-wrapper">
-
-        <!-- Nav header start -->
-        <div class="nav-header">
-            <div class="brand-logo">
-                <a href="{% url 'record_list' %}">
-                    <b class="logo-abbr"><img src="{% static 'images/logo.png' %}" alt=""> </b>
-                    <span class="logo-compact"><img src="{% static 'images/logo-compact.png' %}" alt=""></span>
-                    <span class="brand-title">
-                        <img src="{% static 'images/logo-text.png' %}" alt="">
-                    </span>
-                </a>
-            </div>
+    <div class="az-footer mg-t-auto">
+        <div class="container">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Saule-Marat© Все права защищены 2024 </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Разработка веб-приложении <a href="https://oin.kz" target="_blank">oin.kz</a> </span>
         </div>
-        <!-- Nav header end -->
-
-        <!-- Header start -->
-        <div class="header">
-            <div class="header-content clearfix">
-
-                <div class="nav-control">
-                    <div class="hamburger">
-                        <span class="toggle-icon"><i class="icon-menu"></i></span>
-                    </div>
-                </div>
-                <div class="header-left">
-                    <div class="input-group icons">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
-                        </div>
-                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
-                        <div class="drop-down animated flipInX d-md-none">
-                            <form action="#">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <ul class="clearfix">
-                        <!-- Add more header items here if needed -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- Header end ti-comment-alt -->
-
-        <!-- Sidebar start -->
-        <div class="nk-sidebar">
-            <div class="nk-nav-scroll">
-                <ul class="metismenu" id="menu">
-                    <li class="nav-label">Dashboard</li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{% url 'record_list' %}">Home</a></li>
-                        </ul>
-                    </li>
-                    <!-- Add more menu items here -->
-                </ul>
-            </div>
-        </div>
-        <!-- Sidebar end -->
-
-        <!-- Content body start -->
-        <div class="content-body">
-
-            <div class="container-fluid mt-3">
-                {% block content %}
-                <!-- Content from other templates will be injected here -->
-                {% endblock %}
-            </div>
-            <!-- #/ container -->
-        </div>
-        <!-- Content body end -->
-
-        <!-- Footer start -->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
-            </div>
-        </div>
-        <!-- Footer end -->
     </div>
-    <!-- Main wrapper end -->
 
-    <!-- Scripts -->
-    <script src="{% static 'plugins/common/common.min.js' %}"></script>
-    <script src="{% static 'js/custom.min.js' %}"></script>
-    <script src="{% static 'js/settings.js' %}"></script>
-    <script src="{% static 'js/gleek.js' %}"></script>
-    <script src="{% static 'js/styleSwitcher.js' %}"></script>
+    <!-- Vendor JS -->
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
 
-    <!-- Chartjs -->
-    <script src="{% static 'plugins/chart.js/Chart.bundle.min.js' %}"></script>
-    <!-- Circle progress -->
-    <script src="{% static 'plugins/circle-progress/circle-progress.min.js' %}"></script>
-    <!-- Datamap -->
-    <script src="{% static 'plugins/d3v3/index.js' %}"></script>
-    <script src="{% static 'plugins/topojson/topojson.min.js' %}"></script>
-    <script src="{% static 'plugins/datamaps/datamaps.world.min.js' %}"></script>
-    <!-- Morrisjs -->
-    <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
-    <script src="{% static 'plugins/morris/morris.min.js' %}"></script>
-    <!-- Pignose Calender -->
-    <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
-    <script src="{% static 'plugins/pg-calendar/js/pignose.calendar.min.js' %}"></script>
-    <!-- ChartistJS -->
-    <script src="{% static 'plugins/chartist/js/chartist.min.js' %}"></script>
-    <script src="{% static 'plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js' %}"></script>
-
-    <script src="{% static 'js/dashboard/dashboard-1.js' %}"></script>
-
+    <!-- Azia JS -->
+    <script src="{% static 'js/azia.js' %}"></script>
+    {% block extra_js %}
+    {% endblock %}
 </body>
-
 </html>
