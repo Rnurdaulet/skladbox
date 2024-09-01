@@ -24,6 +24,8 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Details for Record #{{ record.id }}</h4>
+                        <a href="{% url 'generate_pdf' record.id %}" class="btn btn-secondary">Скачать PDF</a>
+
                     </div>
                     <div class="card-body">
                         <div class="row">
