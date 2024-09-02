@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-x7dw#j&s@&exhjd35&ae0_lth!3$%r#52mn7z7c^&jt13@!f%!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['91.243.71.121', 'localhost']
 
 # Application definition
 
@@ -72,10 +72,20 @@ WSGI_APPLICATION = 'skladbox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sm',
+        'USER': 'smuser',
+        'PASSWORD': 'd5z-WnR-5qY-ScM',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
