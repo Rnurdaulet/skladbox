@@ -6,6 +6,7 @@ import pdfkit
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
+
 def generate_pdf(request, record_id):
     # Получаем данные из модели
     record = get_object_or_404(StorehouseRecord, id=record_id)
@@ -54,6 +55,7 @@ def record_detail(request, pk):
     record = get_object_or_404(StorehouseRecord, pk=pk)
     return render(request, 'storehouse/record_detail.html', {'record': record})
 
+
 import requests
 from django.http import JsonResponse
 
@@ -62,7 +64,8 @@ PASSWORD = 'Password1'
 HEADERS = {
     'Content-Type': 'application/json; charset=utf-8',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, как Gecko) '
-                  'Chrome/91.0.4472.124 Safari/537.36'
+                  'Chrome/91.0.4472.124 Safari/537.36',
+    'Referer': 'https://kaspi.kz/mc/'
 }
 M_PARAM = '18604100'
 
@@ -97,7 +100,8 @@ def make_kaspi_request(url, params, headers, cookies):
         if response.status_code == 200:
             return response.json(), 200
         else:
-            return {'error': f'Failed to get data from Kaspi API. Status code: {response.status_code}'}, response.status_code
+            return {
+                'error': f'Failed to get data from Kaspi API. Status code: {response.status_code}'}, response.status_code
     except requests.RequestException as e:
         return {'error': f'An exception occurred: {str(e)}'}, 500
 
@@ -130,6 +134,7 @@ def get_offer_view(request):
 
     return response
 
+
 def get_archive_view(request):
     archive_view_url = 'https://mc.shop.kaspi.kz/mc/api/orderTabs/archive'
     params = {
@@ -149,6 +154,7 @@ def get_points(request):
         'merchantUid': M_PARAM
     }
     return fetch_kaspi_data(points_url, params)
+
 
 # (selected_tab = PICKUP,SIGN_REQUIRED,NEW,DELIVERY,
 #  KASPI_DELIVERY_WAIT_FOR_POINT_DELIVERY,KASPI_DELIVERY_CARGO_ASSEMBLY,
