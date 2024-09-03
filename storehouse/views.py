@@ -7,7 +7,6 @@ import pdfkit
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-
 def generate_pdf(request, record_id):
     # Получаем данные из модели
     record = get_object_or_404(StorehouseRecord, id=record_id)
@@ -34,6 +33,8 @@ def generate_pdf(request, record_id):
     response['Content-Disposition'] = f'inline; filename="record_{record_id}.pdf"'
 
     return response
+
+
 def create_record(request):
     if request.method == 'POST':
         form = StorehouseRecordForm(request.POST, request.FILES)
@@ -44,9 +45,11 @@ def create_record(request):
         form = StorehouseRecordForm()
     return render(request, 'storehouse/create_record.html', {'form': form})
 
+
 def record_list(request):
     records = StorehouseRecord.objects.all()
     return render(request, 'storehouse/record_list.html', {'records': records})
+
 
 def record_detail(request, pk):
     record = get_object_or_404(StorehouseRecord, pk=pk)

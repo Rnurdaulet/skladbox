@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+
+
+{% load static %}
+
+{% block title %}
+    Create Storehouse Record
+{% endblock %}
+
+{% block content %}
+    <div class="az-content-left az-content-left-components">
+        <div class="component-item">
+    <form method="get" class="mb-3">
+            <div id="filterAccordion" class="accordion azia-accordion">
+
+                <div class="card">
+                    <div class="card-header" id="headingPayment">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="true" aria-controls="collapsePayment">
+                                Безналичный расчет
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapsePayment" class="collapse show" aria-labelledby="headingPayment" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.cashless_payment }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingSender">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSender" aria-expanded="false" aria-controls="collapseSender">
+                                ФИО отправителя
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseSender" class="collapse" aria-labelledby="headingSender" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.sender_name }}
+                            {{ filter.form.sender_phone }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingReceiver">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseReceiver" aria-expanded="false" aria-controls="collapseReceiver">
+                                ФИО получателя
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseReceiver" class="collapse" aria-labelledby="headingReceiver" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.receiver_name }}
+                            {{ filter.form.receiver_phone }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingPlaces">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsePlaces" aria-expanded="false" aria-controls="collapsePlaces">
+                                Количество мест
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapsePlaces" class="collapse" aria-labelledby="headingPlaces" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.places_count }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingAmount">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAmount" aria-expanded="false" aria-controls="collapseAmount">
+                                Оплачено
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseAmount" class="collapse" aria-labelledby="headingAmount" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.amount_paid }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingDate">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseDate" aria-expanded="false" aria-controls="collapseDate">
+                                Дата
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseDate" class="collapse" aria-labelledby="headingDate" data-parent="#filterAccordion">
+                        <div class="card-body">
+                            {{ filter.form.date }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Фильтровать</button>
+                <a href="{% url 'storehouse_record_list' %}" class="btn btn-secondary">Очистить фильтры</a>
+            </div>
+        </form>
+
+        </div><!-- component-item -->
+
+    </div><!-- az-content-left -->
+
+
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+        <div class="az-content-breadcrumb">
+            <span>Components</span>
+            <span>Tables</span>
+            <span>Basic Tables</span>
+        </div>
+        <h2 class="az-content-title">Basic Tables</h2>
+
+        <div class="az-content-label mg-b-5">Hoverable Rows Table</div>
+        <p class="mg-b-20">To enable a hover state on table rows.</p>
+
+        {% render_table table %}
+
+        <div class="ht-40"></div>
+    </div><!-- az-content-body -->
+
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/cookie.js' %}" type="text/javascript"></script>
+{% endblock %}
