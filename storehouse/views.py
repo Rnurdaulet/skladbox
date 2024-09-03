@@ -62,10 +62,22 @@ from django.http import JsonResponse
 USERNAME = 'sks_techno@mail.ru'
 PASSWORD = 'Password1'
 HEADERS = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, как Gecko) '
-                  'Chrome/91.0.4472.124 Safari/537.36',
-    'Referer': 'https://kaspi.kz/mc/'
+    # 'Content-Type': 'application/json; charset=utf-8',
+    # 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, как Gecko) '
+    #               'Chrome/91.0.4472.124 Safari/537.36',
+    # 'Referer': 'https://kaspi.kz/mc/'
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Origin': 'https://kaspi.kz',
+    'Referer': 'https://kaspi.kz/',
+    'Sec-CH-UA': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
+    'Sec-CH-UA-Mobile': '?0',
+    'Sec-CH-UA-Platform': '"Windows"',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
 }
 M_PARAM = '18604100'
 
