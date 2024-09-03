@@ -56,7 +56,6 @@ def record_detail(request, pk):
 
 import requests
 from django.http import JsonResponse
-import time
 
 USERNAME = 'sks_techno@mail.ru'
 PASSWORD = 'Password1'
@@ -89,26 +88,18 @@ def get_kaspi_cookies():
         return None
 
 
-def make_kaspi_request(url, params, headers, cookies, max_retries=5):
-    retry_delay = 2  # секунды
+def make_kaspi_request(url, params, headers, cookies):
+    try:
+        response = requests.get(url, params=params,
+                                headers={k: v.encode('utf-8') if isinstance(v, str) else v for k, v in
+                                         headers.items()}, cookies=cookies)
 
-    for attempt in range(max_retries):
-        try:
-            response = requests.get(url, params=params,
-                                    headers={k: v.encode('utf-8') if isinstance(v, str) else v for k, v in
-                                             headers.items()}, cookies=cookies)
-
-            if response.status_code == 200:
-                return response.json(), 200
-            elif response.status_code == 429:
-                time.sleep(retry_delay)
-                retry_delay *= 2  # Exponential backoff
-            else:
-                return {'error': f'Failed to get data from Kaspi API. Status code: {response.status_code}'}, response.status_code
-        except requests.RequestException as e:
-            return {'error': f'An exception occurred: {str(e)}'}, 500
-
-    return {'error': 'Failed to get data from Kaspi API after multiple attempts'}, 429
+        if response.status_code == 200:
+            return response.json(), 200
+        else:
+            return {'error': f'Failed to get data from Kaspi API. Status code: {response.status_code}'}, response.status_code
+    except requests.RequestException as e:
+        return {'error': f'An exception occurred: {str(e)}'}, 500
 
 
 def fetch_kaspi_data(view_url, params):
@@ -138,7 +129,6 @@ def get_offer_view(request):
     print("Response received:", response)
 
     return response
-
 
 def get_archive_view(request):
     archive_view_url = 'https://mc.shop.kaspi.kz/mc/api/orderTabs/archive'
