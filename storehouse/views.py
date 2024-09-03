@@ -122,6 +122,7 @@ def fetch_kaspi_data(view_url, params):
 
 
 def get_offer_view(request):
+    print("Starting get_offer_view")
     offer_view_url = 'https://mc.shop.kaspi.kz/bff/offer-view/list'
     params = {
         'm': M_PARAM,
@@ -131,7 +132,12 @@ def get_offer_view(request):
         't': '',
         'c': ''
     }
-    return fetch_kaspi_data(offer_view_url, params)
+    print("Params prepared:", params)
+
+    response = fetch_kaspi_data(offer_view_url, params)
+    print("Response received:", response)
+
+    return response
 
 
 def get_archive_view(request):
