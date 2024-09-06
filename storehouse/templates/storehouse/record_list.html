@@ -61,7 +61,7 @@
                 <tbody>
                 {% for record in records %}
                     <tr>
-                        <th>{{ forloop.counter }}</th>
+                        <th>{{ record.id }}</th>
                         <td>{{ record.sender_name }}</td>
                         <td>{{ record.sender_phone }}</td>
                         <td>{{ record.receiver_name }}</td>

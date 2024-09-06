@@ -88,12 +88,15 @@ def update_status(request, record_id):
 @login_required
 def record_list(request):
     status = request.GET.get('status')  # Получаем статус из параметров запроса
+
     if status:
-        records = StorehouseRecord.objects.filter(status=status)
+        records = StorehouseRecord.objects.filter(status=status).order_by('id')  # Сортировка по убыванию ID
     else:
-        records = StorehouseRecord.objects.all()  # Если статус не указан, выводим все записи
+        records = StorehouseRecord.objects.all().order_by('id')  # Сортировка по убыванию ID
 
     return render(request, 'storehouse/record_list.html', {'records': records, 'current_status': status})
+
+
 
 @login_required
 def record_detail(request, pk):

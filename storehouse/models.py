@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
+from PIL import Image
 
 
 class StorehouseRecord(models.Model):
@@ -31,6 +32,21 @@ class StorehouseRecord(models.Model):
 
     def __str__(self):
         return f"{self.sender_name} -> {self.receiver_name} ({self.places_count} мест, статус: {self.get_status_display()})"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # Изменение размера изображения после сохранения
+        if self.photo:
+            img = Image.open(self.photo.path)
+
+            # Проверяем, нужно ли изменять размер изображения
+            if img.height > 512 or img.width > 512:
+                output_size = (512, 512)
+                img.thumbnail(output_size, Image.Resampling.LANCZOS)  # Сохраняем пропорции
+
+                # Перезаписываем изображение уменьшенной версией
+                img.save(self.photo.path, quality=85, optimize=True)
 
 class StatusHistory(models.Model):
     storehouse_record = models.ForeignKey(StorehouseRecord, related_name='status_history', on_delete=models.CASCADE)
