@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+
+from .decorators import storehouse_required
 from .forms import StorehouseRecordForm, StorehouseRecordUpdateForm
 from .models import StorehouseRecord, StatusHistory
 import pdfkit
@@ -99,6 +101,7 @@ def record_detail(request, pk):
     return render(request, 'storehouse/record_detail.html', {'record': record})
 
 @login_required
+@storehouse_required
 def edit_record(request, pk):
     record = get_object_or_404(StorehouseRecord, pk=pk)
     old_status = record.status  # Сохраняем старый статус до изменений

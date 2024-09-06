@@ -6,6 +6,7 @@
 {% endblock %}
 {% load status_filters %}
 {% load status_tags %}
+{% load group_tags %}
 
 
 {% block content %}
@@ -60,28 +61,35 @@
                             <a href="{% url 'generate_pdf' record.id %}" class="btn btn-success mb-1">
                                 <i class="typcn typcn-export-outline"></i> Скачать PDF
                             </a>
-                            <a href="{% url 'edit_record' record.pk %}" class="btn btn-warning">
-                                <i class="typcn typcn-edit"></i> Редактировать
-                            </a>
+                            {% if user|has_group:"Склад" %}
+                                <a href="{% url 'edit_record' record.pk %}" class="btn btn-warning">
+                                    <i class="typcn typcn-edit"></i> Редактировать
+                                </a>
+                            {% endif %}
                         </div>
-                        <h4 class="card-title mt-4">Изменить статус</h4>
-                        <form method="post" action="{% url 'update_status' record.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="status">Новый статус</label>
-                                <select name="status" id="status" class="form-control select2-no-search">
-                                    <option value="accepted" {% if record.status == 'accepted' %}selected{% endif %}>
-                                        Принято
-                                    </option>
-                                    <option value="delivered" {% if record.status == 'delivered' %}selected{% endif %}>
-                                        Доставлено
-                                    </option>
-                                    <option value="issued" {% if record.status == 'issued' %}selected{% endif %}>Выдано
-                                    </option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Обновить статус</button>
-                        </form>
+                        {% if user|has_group:"Склад" %}
+                            <h4 class="card-title mt-4">Изменить статус</h4>
+                            <form method="post" action="{% url 'update_status' record.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="status">Новый статус</label>
+                                    <select name="status" id="status" class="form-control select2-no-search">
+                                        <option value="accepted"
+                                                {% if record.status == 'accepted' %}selected{% endif %}>
+                                            Принято
+                                        </option>
+                                        <option value="delivered"
+                                                {% if record.status == 'delivered' %}selected{% endif %}>
+                                            Доставлено
+                                        </option>
+                                        <option value="issued" {% if record.status == 'issued' %}selected{% endif %}>
+                                            Выдано
+                                        </option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Обновить статус</button>
+                            </form>
+                        {% endif %}
                         <h4 class="card-title mt-4">История изменений статусов</h4>
                         <ul class="list-group">
                             {% for history in record.status_history.all %}
