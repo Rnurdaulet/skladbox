@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import StorehouseRecordForm
+from .forms import StorehouseRecordForm, StorehouseRecordUpdateForm
 from .models import StorehouseRecord, StatusHistory
 import pdfkit
 from django.http import HttpResponse
@@ -39,16 +39,12 @@ def create_record(request):
     if request.method == 'POST':
         form = StorehouseRecordForm(request.POST, request.FILES)
         if form.is_valid():
-            # Создаем объект, но пока не сохраняем его в базу данных
             record = form.save(commit=False)
-            # Устанавливаем пользователя, который создал запись
             record.created_by = request.user
-            # Устанавливаем начальный статус
             record.status = 'accepted'
-            # Сохраняем запись
             record.save()
 
-            # Сохраняем историю изменения статуса
+            # Сохранение истории изменения статуса
             StatusHistory.objects.create(
                 storehouse_record=record,
                 old_status='',
@@ -56,7 +52,9 @@ def create_record(request):
                 changed_by=request.user
             )
 
-            return redirect('record_list')  # нужно будет создать URL для списка записей
+            return redirect('record_list')  # Убедитесь, что 'record_list' определен
+        else:
+            print(form.errors.as_data())  # Вывод ошибок для отладки
     else:
         form = StorehouseRecordForm()
 
@@ -106,7 +104,7 @@ def edit_record(request, pk):
     old_status = record.status  # Сохраняем старый статус до изменений
 
     if request.method == 'POST':
-        form = StorehouseRecordForm(request.POST, request.FILES, instance=record)
+        form = StorehouseRecordUpdateForm(request.POST, request.FILES, instance=record)
         if form.is_valid():
             new_status = form.cleaned_data['status']  # Получаем новый статус из формы
             if new_status != old_status:
@@ -120,7 +118,7 @@ def edit_record(request, pk):
             form.save()  # Сохраняем изменения записи
             return redirect('record_detail', pk=record.pk)
     else:
-        form = StorehouseRecordForm(instance=record)
+        form = StorehouseRecordUpdateForm(instance=record)
 
     return render(request, 'storehouse/edit_record.html', {'form': form, 'record': record})
 

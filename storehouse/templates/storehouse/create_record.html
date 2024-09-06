@@ -13,61 +13,120 @@
         </div>
         <h2 class="az-content-title">Создать запись на склад</h2>
         <div class="row row-sm mg-t-20">
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Пожалуйста, исправьте следующие ошибки:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <li> {{ form.non_field_errors|striptags }} </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <form method="POST" enctype="multipart/form-data" class="needs-validation">
                 {% csrf_token %}
 
+                <!-- Поле Безналичный расчет -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label class="ckbox" for="{{ form.cashless_payment.id_for_label }}">
                         {{ form.cashless_payment }}
-                        <span>
-                            {{ form.cashless_payment.label }}
-                        </span>
+                        <span>{{ form.cashless_payment.label }}</span>
                     </label>
+                    <!-- Ошибка для поля cashless_payment -->
+                    {% if form.cashless_payment.errors %}
+                        <div class="text-danger">{{ form.cashless_payment.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле ФИО отправителя -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.sender_name.id_for_label }}">{{ form.sender_name.label }}</label>
                     {{ form.sender_name }}
+                    <!-- Ошибка для поля sender_name -->
+                    {% if form.sender_name.errors %}
+                        <div class="text-danger">{{ form.sender_name.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Номер телефона отправителя -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.sender_phone.id_for_label }}">{{ form.sender_phone.label }}</label>
                     {{ form.sender_phone }}
+                    <!-- Ошибка для поля sender_phone -->
+                    {% if form.sender_phone.errors %}
+                        <div class="text-danger">{{ form.sender_phone.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле ФИО получателя -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.receiver_name.id_for_label }}">{{ form.receiver_name.label }}</label>
                     {{ form.receiver_name }}
+                    <!-- Ошибка для поля receiver_name -->
+                    {% if form.receiver_name.errors %}
+                        <div class="text-danger">{{ form.receiver_name.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Номер телефона получателя -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.receiver_phone.id_for_label }}">{{ form.receiver_phone.label }}</label>
                     {{ form.receiver_phone }}
+                    <!-- Ошибка для поля receiver_phone -->
+                    {% if form.receiver_phone.errors %}
+                        <div class="text-danger">{{ form.receiver_phone.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Количество мест -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.places_count.id_for_label }}">{{ form.places_count.label }}</label>
                     {{ form.places_count }}
+                    <!-- Ошибка для поля places_count -->
+                    {% if form.places_count.errors %}
+                        <div class="text-danger">{{ form.places_count.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Оплачено -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.amount_paid.id_for_label }}">{{ form.amount_paid.label }}</label>
                     {{ form.amount_paid }}
+                    <!-- Ошибка для поля amount_paid -->
+                    {% if form.amount_paid.errors %}
+                        <div class="text-danger">{{ form.amount_paid.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Комментарий -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
                     {{ form.comment }}
+                    <!-- Ошибка для поля comment -->
+                    {% if form.comment.errors %}
+                        <div class="text-danger">{{ form.comment.errors|striptags }}</div>
+                    {% endif %}
                 </div>
 
+                <!-- Поле Фото -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <div class="custom-file">
                         <label for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>
                         {{ form.photo }}
+                        <!-- Ошибка для поля photo -->
+                        {% if form.photo.errors %}
+                            <div class="text-danger">{{ form.photo.errors|striptags }}</div>
+                        {% endif %}
                     </div>
-
                 </div>
 
+                <!-- Кнопка отправки -->
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <button type="submit" class="btn btn-outline-primary">Отправить</button>
                 </div>
@@ -76,6 +135,7 @@
         <div class="ht-40"></div>
     </div><!-- az-content-body -->
 {% endblock %}
+
 {% block extra_js %}
     <script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
     <script src="{% static 'lib/jquery-ui/ui/widgets/datepicker.js' %}"></script>
