@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Create Storehouse Record
+    Список записей на складе
 {% endblock %}
 
 {% load status_filters %}
@@ -30,20 +30,20 @@
         </div>
         <div class="az-dashboard-nav">
             <nav class="nav">
-            <a href="{% url 'record_list' %}?status=accepted"
-               class="nav-link {% if current_status == 'accepted' %}active{% endif %}">Принято</a>
+                <a href="{% url 'record_list' %}?status=accepted"
+                   class="nav-link {% if current_status == 'accepted' %}active{% endif %}">Принято</a>
             </nav>
             <nav class="nav">
-            <a href="{% url 'record_list' %}?status=delivered"
-               class="nav-link {% if current_status == 'delivered' %}active{% endif %}">Доставлено</a>
+                <a href="{% url 'record_list' %}?status=delivered"
+                   class="nav-link {% if current_status == 'delivered' %}active{% endif %}">Доставлено</a>
             </nav>
             <nav class="nav">
-            <a href="{% url 'record_list' %}?status=issued"
-               class="nav-link {% if current_status == 'issued' %}active{% endif %}">Выдано</a>
+                <a href="{% url 'record_list' %}?status=issued"
+                   class="nav-link {% if current_status == 'issued' %}active{% endif %}">Выдано</a>
             </nav>
         </div>
         <div>
-            <table id="storehouseTable" class="display">
+            <table id="storehouseTable" class="display responsive nowrap" style="max-width: 720px;">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -73,8 +73,8 @@
                                 class="badge {% status_color record.status %}"> {{ record.get_status_display }} </span>
                         </td>
                         <td>
-                            <a href="{% url 'record_detail' record.pk %}" class="btn btn-primary btn-sm">
-                                Подробнее <i class="typcn typcn-chevron-right"></i>
+                            <a href="{% url 'record_detail' record.pk %}" class="btn btn-outline-primary btn-sm"> <i
+                                    class="typcn typcn-info-large"></i>
                             </a>
                         </td>
                     </tr>
@@ -82,60 +82,75 @@
                 </tbody>
             </table>
         </div><!-- table-responsive -->
+        <div class="ht-40"></div>
     </div>
 
 
-    <div class="ht-40"></div>
-    </div><!-- az-content-body -->
+
 {% endblock %}
 {% block extra_js %}
-    <script src="{% static 'js/cookie.js' %}" type="text/javascript"></script>
-    {#    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>#}
     <script src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.1.5/af-2.7.0/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.3/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.8.0/sp-2.3.2/sl-2.0.5/datatables.min.js"></script>
-
-    {#    <script src="{% static 'lib/datatables.net/js/jquery.dataTables.min.js' %}"></script>#}
-    {#    <script src="{% static 'lib/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>#}
-    {#    <script src="{% static 'lib/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>#}
-    {#    <script src="{% static 'lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js' %}"></script>#}
     <script src="{% static 'lib/select2/js/select2.min.js' %}"></script>
     <script>
         $(function () {
             'use strict'
 
             $('#storehouseTable').DataTable({
-                dom: '<"row"<"col-sm-4 col-md-4"l>' + '<"col-sm-4 col-md-4 d-flex justify-content-end"B>' + '<"col-sm-4 col-md-4 d-flex justify-content-end"f>>' +
+                dom: '<"row"<"col-sm-6 col-md-6 d-flex justify-content-start"lf>' +
+                    '<"col-sm-6 col-md-6 d-flex justify-content-end"B>>' +
                     '<"row"<"col-sm-12"tr>>' +
-                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7 d-flex justify-content-end"p>>',
                 buttons: [
                     {
-                        extend: 'excelHtml5',
-                        text: '<i class="far fa-file-excel"></i>',
-                        className: 'btn btn-outline-light '
-                    },
-                    {
-                        extend: 'colvis',
-                        text: '<i class="fas fa-filter"></i>',
-                        className: 'btn btn-outline-light '
+                        extend: 'collection',  // Используем 'collection' для объединения кнопок
+                        text: '<i class="fas fa-tools"></i> Опции',
+                        className: 'btn btn-outline-light btn-group d-flex align-items-center',  // Стиль для всей группы
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                text: '<i class="far fa-file-excel"></i> Excel',
+                                className: 'btn btn-outline-light'
+                            },
+                            {
+                                extend: 'colvis',
+                                text: '<i class="fas fa-filter"></i> Вкл/Выкл колонки',
+                                className: 'btn btn-outline-light',
+                                columns: ':not(:eq(0)):not(:eq(-1))'
+                            }
+                        ]
                     }
                 ],
-                responsive: true,
-                columnDefs: [
-                    {responsivePriority: 1, targets: 0},
-                    {responsivePriority: 2, targets: -1}
-                ],
+                responsive: false,
+                {#columnDefs: [#}
+                {#    {#}
+                {#        targets: [5, 6],  // Указываем индексы колонок, которые должны быть скрыты по умолчанию#}
+                {#        visible: false,   // Эти колонки будут скрыты, но доступны в выпадающем меню#}
+                {#        responsivePriority: 1#}
+                {#    },#}
+                {#],#}
                 language: {
                     searchPlaceholder: 'Поиск...',
-                    sSearch: '',
-                    lengthMenu: '_MENU_ записей/страница',
-                    info: "Показано с _START_ по _END_ из _TOTAL_ записей",
-                    infoEmpty: "Показано с 0 по 0 из 0 записей",
-                    infoFiltered: "(отфильтровано из _MAX_ записей)",
-                    zeroRecords: "Совпадающих записей не найдено",
-                    emptyTable: "В таблице нет данных",
-                    loadingRecords: "Загрузка...",
-                    processing: "Обработка..."
+                    sSearch:
+                        '',
+                    lengthMenu:
+                        '_MENU_ записей/страница',
+                    info:
+                        "Показано с _START_ по _END_ из _TOTAL_ записей",
+                    infoEmpty:
+                        "Показано с 0 по 0 из 0 записей",
+                    infoFiltered:
+                        "(отфильтровано из _MAX_ записей)",
+                    zeroRecords:
+                        "Совпадающих записей не найдено",
+                    emptyTable:
+                        "В таблице нет данных",
+                    loadingRecords:
+                        "Загрузка...",
+                    processing:
+                        "Обработка..."
                 }
-            });
+            })
+            ;
             // Select2
             $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
 

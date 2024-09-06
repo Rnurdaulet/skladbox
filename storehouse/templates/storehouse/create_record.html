@@ -2,20 +2,16 @@
 {% load static %}
 
 {% block title %}
-    Create Storehouse Record
+    Создать запись на склад
 {% endblock %}
 
 {% block content %}
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
         <div class="az-content-breadcrumb">
-            <span>Storehouse</span>
-            <span>Create Record</span>
+            <span>Склад</span>
+            <span>Создать запись на склад</span>
         </div>
-        <h2 class="az-content-title">Create Storehouse Record</h2>
-
-        <div class="az-content-label mg-b-5">Form Input &amp; Textarea</div>
-        <p class="mg-b-20">A basic form control input and textarea with disabled and readonly mode.</p>
-
+        <h2 class="az-content-title">Создать запись на склад</h2>
         <div class="row row-sm mg-t-20">
             <form method="POST" enctype="multipart/form-data" class="needs-validation">
                 {% csrf_token %}
@@ -73,7 +69,7 @@
                 </div>
 
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
-                    <button type="submit" class="btn btn-outline-primary">Save</button>
+                    <button type="submit" class="btn btn-outline-primary">Отправить</button>
                 </div>
             </form>
         </div><!-- row -->

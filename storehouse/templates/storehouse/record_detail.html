@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Details for Record #{{ record.id }}
+    Информация о записи #{{ record.id }}
 {% endblock %}
 {% load status_filters %}
 {% load status_tags %}
@@ -11,15 +11,15 @@
 {% block content %}
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
         <div class="az-content-breadcrumb">
-            <span>Storehouse</span>
-            <span>Record Details</span>
+            <span>Склад</span>
+            <span>Информация о записи #{{ record.id }}</span>
         </div>
         <div class="row">
             <!-- Левая колонка с информацией о записи -->
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Информация о записи #{{ record.id }}  <span
+                        <h4 class="card-title">Информация о записи #{{ record.id }} <span
                                 class="badge {% status_color record.status %}">{{ record.status|translate_status }}</span>
                         </h4>
                     </div>

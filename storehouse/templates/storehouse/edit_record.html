@@ -2,18 +2,16 @@
 {% load static %}
 
 {% block title %}
-    Edit Storehouse Record
+Редактирование записи #{{ record.id }}
 {% endblock %}
 
 {% block content %}
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
         <div class="az-content-breadcrumb">
-            <span>Storehouse</span>
-            <span>Edit Record</span>
+            <span>Склад</span>
+            <span>Редактирование записи #{{ record.id }}</span>
         </div>
         <h2 class="az-content-title">Редактирование записи #{{ record.id }}</h2>
-
-        <div class="az-content-label mg-b-5">Form Input &amp; Textarea</div>
         <p class="mg-b-20">Редактируйте необходимые поля и сохраните изменения.</p>
 
         <div class="row row-sm mg-t-20">
