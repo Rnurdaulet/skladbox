@@ -4,13 +4,17 @@
 {% block title %}
     Create Storehouse Record
 {% endblock %}
+
+{% load status_filters %}
+{% load status_tags %}
+
 {% block extra_css %}
     <link href="{% static 'lib/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/typicons.font/typicons.css' %}" rel="stylesheet">
     <link href="{% static 'lib/line-awesome/css/line-awesome.min.css' %}" rel="stylesheet">
-    {#        <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">#}
-    {#        <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">#}
+    {#            <link href="{% static 'lib/datatables.net-dt/css/jquery.dataTables.min.css' %}" rel="stylesheet">#}
+    {#            <link href="{% static 'lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css' %}" rel="stylesheet">#}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css"/>
     <link href="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.1.5/af-2.7.0/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.3/fc-5.0.1/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.0/rr-1.5.0/sc-2.4.3/sb-1.8.0/sp-2.3.2/sl-2.0.5/datatables.min.css"
           rel="stylesheet">
@@ -21,22 +25,36 @@
 {% block content %}
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
         <div class="az-content-breadcrumb">
-            <span>Components</span>
-            <span>Tables</span>
-            <span>Basic Tables</span>
+            <span>Склад</span>
+            <span>Все заказы</span>
         </div>
-        <div class="az-content-label mg-b-5">Hoverable Rows Table</div>
-
+        <div class="az-dashboard-nav">
+            <nav class="nav">
+            <a href="{% url 'record_list' %}?status=accepted"
+               class="nav-link {% if current_status == 'accepted' %}active{% endif %}">Принято</a>
+            </nav>
+            <nav class="nav">
+            <a href="{% url 'record_list' %}?status=delivered"
+               class="nav-link {% if current_status == 'delivered' %}active{% endif %}">Доставлено</a>
+            </nav>
+            <nav class="nav">
+            <a href="{% url 'record_list' %}?status=issued"
+               class="nav-link {% if current_status == 'issued' %}active{% endif %}">Выдано</a>
+            </nav>
+        </div>
         <div>
             <table id="storehouseTable" class="display">
                 <thead>
                 <tr>
                     <th>#</th>
+                    <th>ФИО отправителя</th>
+                    <th>Телефон отправителя</th>
                     <th>ФИО получателя</th>
                     <th>Телефон получателя</th>
                     <th>Количество мест</th>
                     <th>Оплачено</th>
                     <th>Дата</th>
+                    <th>Статус</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -44,25 +62,30 @@
                 {% for record in records %}
                     <tr>
                         <th>{{ forloop.counter }}</th>
+                        <td>{{ record.sender_name }}</td>
+                        <td>{{ record.sender_phone }}</td>
                         <td>{{ record.receiver_name }}</td>
                         <td>{{ record.receiver_phone }}</td>
                         <td>{{ record.places_count }}</td>
                         <td>{{ record.amount_paid }}</td>
                         <td>{{ record.date }}</td>
+                        <td><span
+                                class="badge {% status_color record.status %}"> {{ record.get_status_display }} </span>
+                        </td>
                         <td>
-                            <a href="{% url 'record_detail' record.pk %}"
-                               class="btn btn-primary btn-sm">Подробнее
-                                <i class="typcn typcn-chevron-right"></i>
+                            <a href="{% url 'record_detail' record.pk %}" class="btn btn-primary btn-sm">
+                                Подробнее <i class="typcn typcn-chevron-right"></i>
                             </a>
-
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div><!-- table-responsive -->
+    </div>
 
-        <div class="ht-40"></div>
+
+    <div class="ht-40"></div>
     </div><!-- az-content-body -->
 {% endblock %}
 {% block extra_js %}
@@ -80,7 +103,7 @@
             'use strict'
 
             $('#storehouseTable').DataTable({
-                dom: '<"row"<"col-sm-4 col-md-4"l>'+'<"col-sm-4 col-md-4 d-flex justify-content-end"B>' +'<"col-sm-4 col-md-4 d-flex justify-content-end"f>>'+
+                dom: '<"row"<"col-sm-4 col-md-4"l>' + '<"col-sm-4 col-md-4 d-flex justify-content-end"B>' + '<"col-sm-4 col-md-4 d-flex justify-content-end"f>>' +
                     '<"row"<"col-sm-12"tr>>' +
                     '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
                 buttons: [
@@ -89,13 +112,17 @@
                         text: '<i class="far fa-file-excel"></i>',
                         className: 'btn btn-outline-light '
                     },
-                      {
+                    {
                         extend: 'colvis',
                         text: '<i class="fas fa-filter"></i>',
                         className: 'btn btn-outline-light '
                     }
                 ],
                 responsive: true,
+                columnDefs: [
+                    {responsivePriority: 1, targets: 0},
+                    {responsivePriority: 2, targets: -1}
+                ],
                 language: {
                     searchPlaceholder: 'Поиск...',
                     sSearch: '',
@@ -109,16 +136,6 @@
                     processing: "Обработка..."
                 }
             });
-
-            {#$('#example2').DataTable({#}
-            {#  responsive: true,#}
-            {#  language: {#}
-            {#    searchPlaceholder: 'Search...',#}
-            {#    sSearch: '',#}
-            {#    lengthMenu: '_MENU_ items/page',#}
-            {#  }#}
-
-
             // Select2
             $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
 

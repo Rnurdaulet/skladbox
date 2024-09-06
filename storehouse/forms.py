@@ -13,7 +13,8 @@ class StorehouseRecordForm(forms.ModelForm):
             'places_count',
             'amount_paid',
             'comment',
-            'photo'
+            'photo',
+            'status',
         ]
         widgets = {
             'cashless_payment': forms.CheckboxInput(attrs={'class': ''}),
@@ -25,4 +26,6 @@ class StorehouseRecordForm(forms.ModelForm):
             'amount_paid': forms.NumberInput(attrs={'class': 'form-control', 'step': '1', 'placeholder': 'Введите сумму'}),
             'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите комментарий', 'rows': 3}),
             'photo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'status': forms.Select(attrs={'class': 'form-control select2-no-search'})
+
         }

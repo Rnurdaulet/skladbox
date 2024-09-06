@@ -2,19 +2,19 @@
 {% load static %}
 
 {% block title %}
-    Create Storehouse Record
+    Edit Storehouse Record
 {% endblock %}
 
 {% block content %}
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
         <div class="az-content-breadcrumb">
             <span>Storehouse</span>
-            <span>Create Record</span>
+            <span>Edit Record</span>
         </div>
-        <h2 class="az-content-title">Create Storehouse Record</h2>
+        <h2 class="az-content-title">Редактирование записи #{{ record.id }}</h2>
 
         <div class="az-content-label mg-b-5">Form Input &amp; Textarea</div>
-        <p class="mg-b-20">A basic form control input and textarea with disabled and readonly mode.</p>
+        <p class="mg-b-20">Редактируйте необходимые поля и сохраните изменения.</p>
 
         <div class="row row-sm mg-t-20">
             <form method="POST" enctype="multipart/form-data" class="needs-validation">
@@ -65,6 +65,11 @@
                 </div>
 
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
+                    <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                    {{ form.status }}  <!-- Поле статуса -->
+                </div>
+
+                <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
                     <div class="custom-file">
                         <label for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>
                         {{ form.photo }}
@@ -73,13 +78,14 @@
                 </div>
 
                 <div class="col-lg mg-t-10 mg-lg-t-0 mb-3">
-                    <button type="submit" class="btn btn-outline-primary">Save</button>
+                    <button type="submit" class="btn btn-outline-primary">Обновить запись</button>
                 </div>
             </form>
         </div><!-- row -->
         <div class="ht-40"></div>
     </div><!-- az-content-body -->
 {% endblock %}
+
 {% block extra_js %}
     <script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
     <script src="{% static 'lib/jquery-ui/ui/widgets/datepicker.js' %}"></script>

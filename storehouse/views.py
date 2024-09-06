@@ -1,12 +1,12 @@
-# storehouse/views.py
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import StorehouseRecordForm
-from .models import StorehouseRecord
+from .models import StorehouseRecord, StatusHistory
 import pdfkit
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-
+@login_required
 def generate_pdf(request, record_id):
     # Получаем данные из модели
     record = get_object_or_404(StorehouseRecord, id=record_id)
@@ -34,149 +34,94 @@ def generate_pdf(request, record_id):
 
     return response
 
-
+@login_required
 def create_record(request):
     if request.method == 'POST':
         form = StorehouseRecordForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            # Создаем объект, но пока не сохраняем его в базу данных
+            record = form.save(commit=False)
+            # Устанавливаем пользователя, который создал запись
+            record.created_by = request.user
+            # Устанавливаем начальный статус
+            record.status = 'accepted'
+            # Сохраняем запись
+            record.save()
+
+            # Сохраняем историю изменения статуса
+            StatusHistory.objects.create(
+                storehouse_record=record,
+                old_status='',
+                new_status='accepted',
+                changed_by=request.user
+            )
+
             return redirect('record_list')  # нужно будет создать URL для списка записей
     else:
         form = StorehouseRecordForm()
+
     return render(request, 'storehouse/create_record.html', {'form': form})
 
+@login_required
+def update_status(request, record_id):
+    record = get_object_or_404(StorehouseRecord, id=record_id)
+    old_status = record.status
+    new_status = request.POST.get('status')  # Получаем новый статус из формы
 
+    if new_status and new_status != old_status:
+        # Обновляем статус
+        record.status = new_status
+        record.updated_by = request.user
+        record.save()
+
+        # Записываем изменения в историю
+        StatusHistory.objects.create(
+            storehouse_record=record,
+            old_status=old_status,
+            new_status=new_status,
+            changed_by=request.user
+        )
+
+    # Изменяем ключевой аргумент на 'pk' для правильного перенаправления
+    return redirect('record_detail', pk=record.id)
+
+@login_required
 def record_list(request):
-    records = StorehouseRecord.objects.all()
-    return render(request, 'storehouse/record_list.html', {'records': records})
+    status = request.GET.get('status')  # Получаем статус из параметров запроса
+    if status:
+        records = StorehouseRecord.objects.filter(status=status)
+    else:
+        records = StorehouseRecord.objects.all()  # Если статус не указан, выводим все записи
 
+    return render(request, 'storehouse/record_list.html', {'records': records, 'current_status': status})
 
+@login_required
 def record_detail(request, pk):
     record = get_object_or_404(StorehouseRecord, pk=pk)
     return render(request, 'storehouse/record_detail.html', {'record': record})
 
+@login_required
+def edit_record(request, pk):
+    record = get_object_or_404(StorehouseRecord, pk=pk)
+    old_status = record.status  # Сохраняем старый статус до изменений
 
-import requests
-from django.http import JsonResponse
+    if request.method == 'POST':
+        form = StorehouseRecordForm(request.POST, request.FILES, instance=record)
+        if form.is_valid():
+            new_status = form.cleaned_data['status']  # Получаем новый статус из формы
+            if new_status != old_status:
+                # Если статус изменён, записываем изменения в историю
+                StatusHistory.objects.create(
+                    storehouse_record=record,
+                    old_status=old_status,
+                    new_status=new_status,
+                    changed_by=request.user
+                )
+            form.save()  # Сохраняем изменения записи
+            return redirect('record_detail', pk=record.pk)
+    else:
+        form = StorehouseRecordForm(instance=record)
 
-USERNAME = 'sks_techno@mail.ru'
-PASSWORD = 'Password1'
-HEADERS = {
-    # 'Content-Type': 'application/json; charset=utf-8',
-    # 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, как Gecko) '
-    #               'Chrome/91.0.4472.124 Safari/537.36',
-    # 'Referer': 'https://kaspi.kz/mc/'
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-    'Origin': 'https://kaspi.kz',
-    'Referer': 'https://kaspi.kz/',
-    'Sec-CH-UA': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
-    'Sec-CH-UA-Mobile': '?0',
-    'Sec-CH-UA-Platform': '"Windows"',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-}
-M_PARAM = '18604100'
+    return render(request, 'storehouse/edit_record.html', {'form': form, 'record': record})
 
 
-def get_kaspi_cookies():
-    login_url = 'https://kaspi.kz/mc/api/login'
-    params = {
-        'username': USERNAME,
-        'password': PASSWORD
-    }
-
-    try:
-        response = requests.post(login_url, params=params,
-                                 headers={k: v.encode('utf-8') if isinstance(v, str) else v for k, v in
-                                          HEADERS.items()})
-        if response.status_code == 200:
-            return response.cookies
-        else:
-            print(f"Failed to login. Status code: {response.status_code}, Response: {response.text}")
-            return None
-    except requests.RequestException as e:
-        print(f"Request exception: {str(e)}")
-        return None
-
-
-def make_kaspi_request(url, params, headers, cookies):
-    try:
-        response = requests.get(url, params=params,
-                                headers={k: v.encode('utf-8') if isinstance(v, str) else v for k, v in
-                                         headers.items()}, cookies=cookies)
-
-        if response.status_code == 200:
-            return response.json(), 200
-        else:
-            return {
-                'error': f'Failed to get data from Kaspi API. Status code: {response.status_code}'}, response.status_code
-    except requests.RequestException as e:
-        return {'error': f'An exception occurred: {str(e)}'}, 500
-
-
-def fetch_kaspi_data(view_url, params):
-    cookies = get_kaspi_cookies()
-
-    if cookies is None:
-        return JsonResponse({'error': 'Failed to get cookies from Kaspi API'}, status=500)
-
-    result, status_code = make_kaspi_request(view_url, params, HEADERS, cookies)
-    return JsonResponse(result, status=status_code if status_code != 200 else 200, safe=False)
-
-
-def get_offer_view(request):
-    print("Starting get_offer_view")
-    offer_view_url = 'https://mc.shop.kaspi.kz/bff/offer-view/list'
-    params = {
-        'm': M_PARAM,
-        'p': 0,
-        'l': 10,
-        'a': 'true',
-        't': '',
-        'c': ''
-    }
-    print("Params prepared:", params)
-
-    response = fetch_kaspi_data(offer_view_url, params)
-    print("Response received:", response)
-
-    return response
-
-
-def get_archive_view(request):
-    archive_view_url = 'https://mc.shop.kaspi.kz/mc/api/orderTabs/archive'
-    params = {
-        'start': 0,
-        'count': 10,
-        'fromDate': 1722970800000,
-        'toDate': 1723027971803,
-        'statuses': ['CANCELLED', 'COMPLETED', 'RETURNED', 'CREDIT_TERMINATION_PROCESS'],
-        '_m': M_PARAM
-    }
-    return fetch_kaspi_data(archive_view_url, params)
-
-
-def get_points(request):
-    points_url = 'https://mc.shop.kaspi.kz/bff/points'
-    params = {
-        'merchantUid': M_PARAM
-    }
-    return fetch_kaspi_data(points_url, params)
-
-
-# (selected_tab = PICKUP,SIGN_REQUIRED,NEW,DELIVERY,
-#  KASPI_DELIVERY_WAIT_FOR_POINT_DELIVERY,KASPI_DELIVERY_CARGO_ASSEMBLY,
-#  KASPI_DELIVERY_WAIT_FOR_COURIER,KASPI_DELIVERY_TRANSMITTED,KASPI_DELIVERY_RETURN_REQUEST)
-def get_active_orders(request, selected_tab):
-    active_orders_url = 'https://mc.shop.kaspi.kz/mc/api/orderTabs/active'
-    params = {
-        'count': 10,
-        'selectedTabs': selected_tab,
-        'startIndex': 0,
-        '_m': M_PARAM
-    }
-    return fetch_kaspi_data(active_orders_url, params)

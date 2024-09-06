@@ -24,69 +24,74 @@
     {% endblock %}
 </head>
 <body>
-    <div class="az-header">
-      <div class="container">
+<div class="az-header">
+    <div class="container">
         <div class="az-header-left">
-          <a href="/" class="az-logo"><span></span> Saule-Marat</a>
-          <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
+            <a href="/" class="az-logo"><span></span> Saule-Marat</a>
+            <a href="" id="azMenuShow" class="az-header-menu-icon d-lg-none"><span></span></a>
         </div><!-- az-header-left -->
         <div class="az-header-menu">
-          <div class="az-header-menu-header">
-            <a href="/" class="az-logo"><span></span> Saule-Marat</a>
-            <a href="" class="close">&times;</a>
-          </div><!-- az-header-menu-header -->
-          <ul class="nav">
-            <li class="nav-item">
-              <a href="{% url 'record_list' %}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i> Все заказы</a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'create_record' %}" class="nav-link"><i class="typcn typcn-chart-bar-outline"></i> Создать заказ</a>
-            </li>
-          </ul>
+            <div class="az-header-menu-header">
+                <a href="/" class="az-logo"><span></span> Saule-Marat</a>
+                <a href="" class="close">&times;</a>
+            </div><!-- az-header-menu-header -->
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="{% url 'record_list' %}?status=accepted" class="nav-link"><i
+                            class="typcn typcn-chart-area-outline"></i>
+                        Все заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'create_record' %}" class="nav-link"><i class="typcn typcn-chart-bar-outline"></i>
+                        Создать заказ</a>
+                </li>
+            </ul>
         </div><!-- az-header-menu -->
         <div class="az-header-right">
-          <div class="dropdown az-profile-menu">
-            <a href="" class="az-img-user"><img src="../img/faces/face1.jpg" alt=""></a>
-            <div class="dropdown-menu">
-              <div class="az-dropdown-header d-sm-none">
-                <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
-              </div>
-              <div class="az-header-profile">
-                <div class="az-img-user">
-                  <img src="../img/faces/face1.jpg" alt="">
-                </div><!-- az-img-user -->
-                <h6>Aziana Pechon</h6>
-                <span>Premium Member</span>
-              </div><!-- az-header-profile -->
-              <a href="page-signin.html" class="dropdown-item"><i class="typcn typcn-power-outline"></i> Выйти</a>
-            </div><!-- dropdown-menu -->
-          </div>
+            <ul class="nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link">Привет, {{ user.username }}!</span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="dropdown-item">
+                            <i class="typcn typcn-power-outline"></i> Выйти
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="dropdown-item">
+                            <i class="typcn typcn-key-outline"></i> Войти
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </div><!-- az-header-right -->
-      </div><!-- container -->
-    </div><!-- az-header -->
-
-    <div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40">
-        <div class="container">
-            {% block content %}
-            {% endblock %}
-        </div>
+    </div><!-- container -->
+</div><!-- az-header -->
+<div class="az-content pd-y-20 pd-lg-y-30 pd-xl-y-40">
+    <div class="container">
+        {% block content %}
+        {% endblock %}
     </div>
+</div>
 
-    <div class="az-footer mg-t-auto">
-        <div class="container">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Saule-Marat© Все права защищены 2024 </span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Разработка веб-приложении <a href="https://oin.kz" target="_blank">oin.kz</a> </span>
-        </div>
+<div class="az-footer mg-t-auto">
+    <div class="container">
+        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Saule-Marat© Все права защищены 2024 </span>
+        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Разработка веб-приложении <a
+                href="https://oin.kz" target="_blank">oin.kz</a> </span>
     </div>
+</div>
 
-    <!-- Vendor JS -->
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
+<!-- Vendor JS -->
+<script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'lib/ionicons/ionicons.js' %}"></script>
 
-    <!-- Azia JS -->
-    <script src="{% static 'js/azia.js' %}"></script>
-    {% block extra_js %}
-    {% endblock %}
+<!-- Azia JS -->
+<script src="{% static 'js/azia.js' %}"></script>
+{% block extra_js %}
+{% endblock %}
 </body>
 </html>

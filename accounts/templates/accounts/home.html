@@ -10,20 +10,27 @@
         <div class="az-content-breadcrumb">
             <span>Storehouse</span>
         </div>
-        <h2 class="az-content-title">Добро пожаловать!</h2>
-
-        <div class="az-content-label mg-b-5">Логин аккаунта</div>
-        <div class="row row-xs wd-xl-80p">
-            <div class="col-sm-12 mg-t-10 mg-md-t-0 mb-3">
-                <a class="btn btn-success btn-with-icon btn-block" href="{% url 'create_record' %}"><i class="typcn typcn-plus"></i> Добавить заказ
-                </a>
+        {% if user.is_authenticated %}
+            <h2 class="az-content-title">Добро пожаловать, <span>{{ user.username }}!</span></h2>
+            <!-- Отображаем кнопки только для авторизованных пользователей -->
+            <div class="row row-xs wd-xl-80p">
+                <div class="col-sm-12 mg-t-10 mg-md-t-0 mb-3">
+                    <a class="btn btn-success btn-with-icon btn-block" href="{% url 'create_record' %}">
+                        <i class="typcn typcn-plus"></i> Добавить заказ
+                    </a>
+                </div>
+                <div class="col-sm-12 mg-t-10 mg-md-t-0">
+                    <a class="btn btn-indigo btn-with-icon btn-block" href="{% url 'record_list' %}">
+                        <i class="typcn typcn-th-list"></i> Список заказов
+                    </a>
+                </div>
             </div>
-            <div class="col-sm-12 mg-t-10 mg-md-t-0">
-                <a class="btn btn-indigo btn-with-icon btn-block" href="{% url 'record_list' %}"><i class="typcn typcn-th-list"></i> Список заказов
-                </a>
-            </div>
-
-        </div>
+        {% else %}
+            <h2 class="az-content-title">Добро пожаловать!</h2>
+            <!-- Сообщение для неавторизованных пользователей -->
+            <p>Пожалуйста, <a href="{% url 'login' %}">авторизуйтесь</a>, чтобы добавить заказ или посмотреть список
+                заказов.</p>
+        {% endif %}
 
     </div><!-- az-content-body -->
 
